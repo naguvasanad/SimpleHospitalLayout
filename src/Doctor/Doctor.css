@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+}
+
+.delete_icon{
+    color: red;
+}
+.edit_icon{
+    color: aqua;
+    background-color: yellow;
+}

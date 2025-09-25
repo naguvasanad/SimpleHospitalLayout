@@ -1,0 +1,85 @@
+body{
+  background-image: url("https://picsum.photos/200/300/?blur");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.nav-container{
+  background-image: linear-gradient(to right, lightgreen ,orange);
+  width: 100%;
+  height: 6rem;
+  display: grid;
+  grid-template-columns: 7rem  2fr 4fr 7rem;
+  box-shadow: 10px 10px gray;
+}
+
+li{
+  list-style-type: none;
+}
+.logo{
+  grid-column: 2/3;
+  display: grid;
+  justify-content: start;
+  align-items: center;
+}
+
+.menu-link ul{
+  height: 6rem;
+  grid-column: 3/4;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+  text-transform: uppercase;
+ 
+
+}
+
+.menu-link ul li{
+  text-align: right;
+}
+
+
+.logout__btn{
+  padding: 7px;
+  border: none;
+  background-color: black;
+  color: white;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.logout__btn:hover{
+cursor: pointer;
+}
+
+.home:hover{
+padding: 3px 5px;
+border: 1px solid orange;
+background-color: orange;
+border-radius: 2px;
+}
+
+.about:hover{
+padding: 3px 5px;
+border: 1px solid orange;
+background-color: orange;
+border-radius: 2px;
+}
+.contact:hover{
+padding: 3px 5px;
+border: 1px solid orange;
+background-color: orange;
+border-radius: 2px;
+}
+.service:hover{
+padding: 3px 5px;
+border: 1px solid orange;
+background-color: orange;
+border-radius: 2px;
+}
+
+.icon{
+font-size: 35px;
+}
+
