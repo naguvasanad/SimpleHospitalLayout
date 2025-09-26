@@ -10,18 +10,7 @@ import { useEffect, useState } from 'react';
 //import Staff from './Staff/Staff';
 
 
-function App() {
-
-  
-
-  // useEffect(() => {
-  //   fetch("http://localhost:5001/users")
-  //     .then((res) => res.json())
-  //     .then((data) => setLoginUser(data))
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  
+function App() {  
   return (
     <BrowserRouter> 
     <div className='nav-container'>
