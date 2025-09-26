@@ -7,21 +7,28 @@ import Staff from './Staff/Staff'
 import Home from './Home/Home';
 import LoginPage from './Login/LoginPage';
 import { useEffect, useState } from 'react';
-//import Staff from './Staff/Staff';
+//import ProtectedRoute from './ProtectedRoute';
 
 
 function App() {
+  const [name, setName] = useState('');
+  const [logModal,setLogModal] = useState(true);
 
-  
+  useEffect(() => {
+    const storedName = localStorage.getItem('user');
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5001/users")
-  //     .then((res) => res.json())
-  //     .then((data) => setLoginUser(data))
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  
+  const HandleLogout = (e)=>{
+    e.preventDefault();
+    localStorage.clear();
+    localStorage.removeItem("isLoggedIn")
+    window.location.href = "/LoginPage"
+    setLogModal(!logModal)
+  }
+ 
   return (
     <BrowserRouter> 
     <div className='nav-container'>
@@ -34,17 +41,25 @@ function App() {
                     <li ><Link to="/Patient" style={{textDecoration: 'none', color: 'black'}}>Patient</Link></li>
                     <li ><Link to="/Doctor" style={{textDecoration: 'none', color: 'black'}}>Doctor</Link></li>
                     <li ><Link to="/Staff" style={{textDecoration: 'none', color: 'black'}}>Staff</Link></li>
+                    {logModal &&(
+                      <div>
                     <li><Link to="/LoginPage" style={{textDecoration: 'none', color: 'black'}} >Login</Link></li>
+                    <li><Link style={{textDecoration: 'none', color: 'black'}}>{name}</Link></li>
+                    </div>
+                  )}
+                    <li><Link style={{textDecoration: 'none', color: 'black'}} onClick={(e)=>HandleLogout(e)}>Logout</Link></li>
                 </ul>
         </div>
       
     </div>
     
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        
+        <Route path="/Home" element={<Home/>}/>
         <Route path="/Patient" element={<Patient/>}/>
         <Route path="/Doctor" element={< Doctor/>} />
         <Route path="/Staff" element={<Staff />} />
+       
         <Route path="/LoginPage" element={<LoginPage/>}/>
       </Routes>
          
