@@ -4,33 +4,32 @@ import { BiSolidLogIn } from 'react-icons/bi';
 import "./LoginPage.css"
 
 
-function LoginPage() {
+function LoginPage(storeUser) {
 
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
-    const [message,setMessage] = useState('');
+    
 
    
 
-    const handleSubmit = async(e) =>{
-        e.preventDefault();
-      const res= await  fetch("http://localhost:5001/users",{
-        method:'post',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email,password})    
-      });
-
-      const data = await res.json();
-
-      if(res.ok){
-        alert(data.message)
-        setMessage(`${data.name}`);
-      }else{
-        setMessage(data.message)
-      }
-
+    const handleSubmit = (e,user) =>{
+        
+         e.preventDefault();
+        fetch('http://localhost:5001/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, password })
+          })
+            .then(res => res.json())
+            .then(data =>{ console.log(data)
+                localStorage.setItem("isLoggedIn","true");
+             localStorage.setItem('user',name);
+             window.location.href = '/Home'
+           })
+            .catch(err => console.error('Fetch error:', err));
     }
+    
 
   return (
     <div className='login'>

@@ -14,8 +14,14 @@ const Doctor=()=>{
           .catch((err) => console.log(err));
       }, []);
 
-      const HandleOnDelete =(e,doctor)=>{
+      
+
+      const HandleOnDelete=(e,doctor)=>{
         e.preventDefault();
+    fetch(`http://localhost:5001/deleteDoctor/${doctor.Doc_id}`,{method:'delete'})
+       .then((res)=> res.json())
+       .then((data)=>{ alert('deleted '+doctor.DoctorName)})
+       .catch((err)=>console.log(err));
       }
 
     return(
