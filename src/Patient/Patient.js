@@ -4,13 +4,13 @@ import { MdOutlineDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import "./Patient.css";
 import Edit from "./Edit";
-import { BlobServiceClient } from "@azure/storage-blob";
-//import { Link } from "react-router-dom";
+import PatientCard from "../PatientCard/PatientCard";
+
+
 
 const Patient = () => {
   const [users, setUsers] = useState([]);
   const [addpatient, setAddPatient] = useState(false);
-  const [needRefresh, setNeedRefresh] = useState(false);
   const [name, setName] = useState("");
   const [modal, setModal] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -84,15 +84,11 @@ const Patient = () => {
       .then((response) => response.json())
       .then((json) => {
         alert(json.message);
-        setLastPatientSavedId(json.patientId);
-        
-
-        //file.name=""+lastPatientSavedId
-        //setFile(renamedFile);
-        upLoadToAzure();
-      })
+        setLastPatientSavedId(json.patientId);   
+             })
       .catch((err) => console.log(err));
   };
+
 
   const toggleModal = () => {
     setAddPatient(!addpatient);
@@ -116,31 +112,35 @@ const Patient = () => {
 // })
 // .catch(error => console.error(error));
 // }
-  const upLoadToAzure = async () => {
-    alert("upload");
-    const SaSToken =
-      "sp=racwdli&st=2025-09-27T09:29:51Z&se=2025-09-29T17:44:51Z&sv=2024-11-04&sr=c&sig=IOm0AsdSJjNrgeThPmRWDagK2O1QjhypyOUvtEW%2FhZ4%3D";
-    const ContainerName = "hospitalimagecontainer";
-    const storageAccountName = "hospitalimagestorage";
+//   const upLoadToAzure = async () => {
+//     alert("upload");
+//     const SaSToken =
+//       "sp=racwdli&st=2025-09-27T09:29:51Z&se=2025-09-29T17:44:51Z&sv=2024-11-04&sr=c&sig=IOm0AsdSJjNrgeThPmRWDagK2O1QjhypyOUvtEW%2FhZ4%3D";
+//     const ContainerName = "hospitalimagecontainer";
+//     const storageAccountName = "hospitalimagestorage";
 
-    const blobServiceClient = new BlobServiceClient(
-      `https://${storageAccountName}.blob.core.windows.net/?${SaSToken}`
-    );
+//     const blobServiceClient = new BlobServiceClient(
+//       `https://${storageAccountName}.blob.core.windows.net/?${SaSToken}`
+//     );
 
-    const containerClient = blobServiceClient.getContainerClient(ContainerName);
-    var renamedFile = new File([file], lastPatientSavedId+".jpg", {
-          type: file.type,
-          lastModified: file.lastModified,
-        });
-        setFile(renamedFile);
-    const blobClient = containerClient.getBlockBlobClient(renamedFile.name);
-await alert(renamedFile.name)
-    await blobClient.uploadBrowserData(file, {
-      blobHTTPHeaders: { blobContentType: file.type },
-    });
+//     const containerClient = blobServiceClient.getContainerClient(ContainerName);
+//     var renamedFile = new File([file], lastPatientSavedId+".jpg", {
+//           type: file.type,
+//           lastModified: file.lastModified,
+//         });
+//         setFile(renamedFile);
+//     const blobClient = containerClient.getBlockBlobClient(renamedFile.name);
+// await alert(renamedFile.name)
+//     await blobClient.uploadBrowserData(file, {
+//       blobHTTPHeaders: { blobContentType: file.type },
+//     });
 
-    alert("Upload successful!");
-  };
+//     alert("Upload successful!");
+//   };
+
+  //locallystore image
+  
+  
 
   return (
     <div>
@@ -180,8 +180,7 @@ await alert(renamedFile.name)
               <button
                 type="submit"
                 className="btn btn-success"
-                onClick={() => handleSave()}
-              >
+                onClick={() => handleSave()}>
                 Save
               </button>
               <button type="submit" className="btn btn-warning">
@@ -206,11 +205,14 @@ await alert(renamedFile.name)
         onChange={HandleSearchName}
         placeholder="Search by name"
       ></input>
+       <img src={`${process.env.PUBLIC_URL}/Image/actor1.jpg`} alt="Student" style={{ width: '100px', height: '100px' }} />
+
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Image</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Delete</th>
@@ -225,6 +227,9 @@ await alert(renamedFile.name)
                 <tr key={index}>
                   <td>{user.id}</td>
                   <td>{user.FirstName}</td>
+                  <td>
+                    <img src="../Image/actor1.jpg" alt="Student" style={{width:'100px',height:'100px'}}/>
+                  </td>
                   <td>{user.Email}</td>
                   <td>{user.Phone}</td>
                   <td style={{ color: "red" }}>
@@ -244,6 +249,7 @@ await alert(renamedFile.name)
           }
         </tbody>
       </Table>
+      <PatientCard users={users}/>
     </div>
   );
 };
