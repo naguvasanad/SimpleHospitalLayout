@@ -7,6 +7,7 @@ import Staff from './Staff/Staff'
 import Home from './Home/Home';
 import LoginPage from './Login/LoginPage';
 import { useEffect, useState } from 'react';
+import UploadImage from './UploadImage/UploadImage';
 //import ProtectedRoute from './ProtectedRoute';
 
 
@@ -41,9 +42,12 @@ function App() {
                     <li ><Link to="/Patient" style={{textDecoration: 'none', color: 'black'}}>Patient</Link></li>
                     <li ><Link to="/Doctor" style={{textDecoration: 'none', color: 'black'}}>Doctor</Link></li>
                     <li ><Link to="/Staff" style={{textDecoration: 'none', color: 'black'}}>Staff</Link></li>
+                     <li ><Link to="/UpLoadImage" style={{textDecoration: 'none', color: 'black'}}>UpLoadImage</Link></li>
                     {logModal &&(
                       <div>
-                    <li><Link to="/LoginPage" style={{textDecoration: 'none', color: 'black'}} >Login</Link></li>
+                    <li>
+                      <Link to="/LoginPage" style={{textDecoration: 'none', color: 'black'}} >Login</Link>
+                    </li>
                     <li><Link style={{textDecoration: 'none', color: 'black'}}>{name}</Link></li>
                     </div>
                   )}
@@ -59,7 +63,7 @@ function App() {
         <Route path="/Patient" element={<Patient/>}/>
         <Route path="/Doctor" element={< Doctor/>} />
         <Route path="/Staff" element={<Staff />} />
-       
+       <Route path="/UpLoadImage" element={<UploadImage />} />
         <Route path="/LoginPage" element={<LoginPage/>}/>
       </Routes>
          
