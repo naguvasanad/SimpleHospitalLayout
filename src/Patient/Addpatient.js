@@ -30,7 +30,7 @@ function Addpatient() {
        <div className='modal_content'>
       <div onClick={toggleModal} className='overlay'></div>
      <div className='col-4'>
-     <h1>Add new student</h1>
+     <h1>Add new Patient</h1>
 
      <div className='form-group'>
      <input type='text' placeholder='tName' 
