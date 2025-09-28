@@ -16,6 +16,8 @@ const Patient = () => {
   const [editId, setEditId] = useState(null);
   const [file, setFile] = useState(null);
   const [lastPatientSavedId, setLastPatientSavedId] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize,setPageSize] = useState(5);
   const [editFormData, setEditFormData] = useState({
     FirstName: "",
     Email: "",
@@ -95,52 +97,27 @@ const Patient = () => {
   };
 
   const handleFileChange = (e) => {
-    //alert("onchange")
-    setFile(e.target.files[0]);
-    //alert(renamedFile.name)
-  };
-// const getImageFromAzure=()=>
-// {
-//   fetch('https://hospitalimagestorage.blob.core.windows.net/hospitalimagecontainer/41.jpg', {
-//  headers: {
-//    'Authorization': 'Bearer sp=racwdli&st=2025-09-27T09:29:51Z&se=2025-09-29T17:44:51Z&sv=2024-11-04&sr=c&sig=IOm0AsdSJjNrgeThPmRWDagK2O1QjhypyOUvtEW%2FhZ4%3D'
-//  }
-// })
-// .then(response => response.json())
-// .then(json=>{
-//   console.log(json)
-// })
-// .catch(error => console.error(error));
-// }
-//   const upLoadToAzure = async () => {
-//     alert("upload");
-//     const SaSToken =
-//       "sp=racwdli&st=2025-09-27T09:29:51Z&se=2025-09-29T17:44:51Z&sv=2024-11-04&sr=c&sig=IOm0AsdSJjNrgeThPmRWDagK2O1QjhypyOUvtEW%2FhZ4%3D";
-//     const ContainerName = "hospitalimagecontainer";
-//     const storageAccountName = "hospitalimagestorage";
+        setFile(e.target.files[0]);
+      }; 
 
-//     const blobServiceClient = new BlobServiceClient(
-//       `https://${storageAccountName}.blob.core.windows.net/?${SaSToken}`
-//     );
-
-//     const containerClient = blobServiceClient.getContainerClient(ContainerName);
-//     var renamedFile = new File([file], lastPatientSavedId+".jpg", {
-//           type: file.type,
-//           lastModified: file.lastModified,
-//         });
-//         setFile(renamedFile);
-//     const blobClient = containerClient.getBlockBlobClient(renamedFile.name);
-// await alert(renamedFile.name)
-//     await blobClient.uploadBrowserData(file, {
-//       blobHTTPHeaders: { blobContentType: file.type },
-//     });
-
-//     alert("Upload successful!");
-//   };
-
-  //locallystore image
   
   
+  const indexOfLastPatient = currentPage * pageSize;
+const indexOfFirstPatient = indexOfLastPatient - pageSize;
+const currentPatients = users.slice(indexOfFirstPatient, indexOfLastPatient);
+
+const totalPages = Math.ceil(users.length / pageSize);
+
+const handlePageSize = (e) => {
+  const value = parseInt(e.target.value, 10); // Convert to number
+
+  if (!isNaN(value) && value > 0) {
+    setPageSize(value);
+  } else {
+    setPageSize(10); // Default fallback
+  }
+};
+
 
   return (
     <div>
@@ -151,7 +128,6 @@ const Patient = () => {
           <div onClick={toggleModal} className="overlay"></div>
           <div className="col-4">
             <h1>Add new Patient</h1>
-
             <div className="form-group">
               <input
                 type="text"
@@ -203,10 +179,41 @@ const Patient = () => {
       <input
         type="search"
         onChange={HandleSearchName}
-        placeholder="Search by name"
-      ></input>
-       <img src={`${process.env.PUBLIC_URL}/Image/actor1.jpg`} alt="Student" style={{ width: '100px', height: '100px' }} />
+        placeholder="Search by name">
+      </input>
 
+      <div>
+        <label>Enter Page Size</label>
+        <input type="number" value={pageSize} onChange={(e)=>handlePageSize(e)}/>
+        <div className="pagination">
+           <button
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
+    >
+      Previous
+    </button>
+
+    {[...Array(totalPages)].map((_, i) => (
+      <button
+        key={i}
+        onClick={() => setCurrentPage(i + 1)}
+        className={currentPage === i + 1 ? 'active' : ''}
+      >
+        {i + 1}
+      </button>
+    ))}
+
+    <button
+      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+      disabled={currentPage === totalPages}
+    >
+      Next
+    </button>
+        </div>
+      </div>
+
+
+       
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -222,7 +229,7 @@ const Patient = () => {
         <tbody>
           {
             //users.filter(fname=>fname.name.includes(name)).map((user, index) => {
-            users.map((user, index) => {
+            currentPatients.map((user, index) => {
               return (
                 <tr key={index}>
                   <td>{user.id}</td>
@@ -241,15 +248,14 @@ const Patient = () => {
                     <button>
                       <CiEdit />
                     </button>
-                    {/* <Link to={<Edit/>}></Link> */}
-                  </td>
+                 </td>
                 </tr>
               );
             })
           }
         </tbody>
       </Table>
-      <PatientCard users={users}/>
+      {/* <PatientCard users={users}/> */}
     </div>
   );
 };
